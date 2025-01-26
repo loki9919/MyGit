@@ -4,8 +4,8 @@ import hashlib
 GIT_DIR = '.ugit'
 
 def init():
-    os.makedirs(GIT_DIR)
-    os.makedirs(f'{GIT_DIR}/objects')
+    os.makedirs(GIT_DIR, exist_ok=True)
+    os.makedirs(f'{GIT_DIR}/objects', exist_ok=True)
     
 def hash_object(data, type_='blob'):
     obj = type_.encode() + b'\x00' + data

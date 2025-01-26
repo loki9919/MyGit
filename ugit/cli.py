@@ -1,7 +1,7 @@
 import argparse
 import os
 import sys
-from . import data
+from . import data, base
 
 def main():
     args = parse_args()
@@ -27,11 +27,14 @@ def parse_args():
     cat.set_defaults(func=cat_file)
     cat.add_argument('object')
     
+    write_tree_parser = commands.add_parser('write-tree')
+    write_tree_parser.set_defaults(func=write_tree)
+    
     return parser.parse_args()
 
 def init(args):
     data.init()
-    print(f'Initialized empty ugit repostry in {os.getcwd}/{data.GIT_DIR}')
+    print(f'Initialized empty ugit repostry in {os.getcwd()}/{data.GIT_DIR}')
 
 def hash_object(args):
     with open(args.file, 'rb') as f:
@@ -40,3 +43,6 @@ def hash_object(args):
 def cat_file(args):
     sys.stdout.flush()
     sys.stdout.buffer.write(data.get_object(args.object, expected=None))
+
+def write_tree(args):
+    base.write_tree()
