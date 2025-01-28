@@ -19,7 +19,8 @@ def write_tree(directory='.'):
             elif entry.is_dir(follow_symlinks=False):
                 type_ = 'tree'
                 oid = write_tree(full)
-            entries.append((entry.name, oid, type_))
+            if type_ is not None:
+                entries.append((entry.name, oid, type_))
 
     tree = ''.join(f'{type_}{oid}{name}\n'
                     for name, oid, type_ in sorted(entries))
@@ -31,8 +32,10 @@ def _iter_tree_entries(oid):
         return
     tree = data.get_object(oid, expected='tree')
     for entry in tree.decode().splitlines():
-        type_, oid, name = entry.split(' ', 2)
-        yield type_, oid, name
+        parts = entry.split(' ', 2)
+        if len(parts) == 3:
+          entry_type, entry_oid, entry_name = parts
+          yield entry_type, entry_oid, entry_name
         
 def get_tree(oid, base_path=''):
     result = {}
