@@ -72,13 +72,17 @@ def commit(args):
     
 def log(args):
     oid = args.oid or data.get_HEAD()
+    
     while oid:
-        commit =args.oid or base.get_commit(oid)
+        print(f'Current OID: {oid}')
+        commit = base.get_commit(oid)
         
         print(f'commit {oid}\n')
         print(textwrap.indent(commit.message, '    '))
         print('')
+        
         oid = commit.parent
+
 
 def checkout(args):
     base.checkout(args.oid)

@@ -98,20 +98,28 @@ def checkout(oid):
 Commit = namedtuple ('Commit', ['tree', 'parent', 'message'])
 
 def get_commit(oid):
-    parent= None
+    parent = None
+    tree = None
     
-    commit = data.get_object(oid, 'commit').decode()
-    lines = iter(commit.splitlines())
+    commit_data = data.get_object(oid, 'commit').decode()
+    lines = iter(commit_data.splitlines())
+    
     for line in itertools.takewhile(operator.truth, lines):
-        key, value = line.split(' ', 1)
+        if not line.strip():
+            continue
+        parts = line.split(' ', 1)
+        if len(parts) < 2:
+            continue
+        key, value = parts
         if key == 'tree':
             tree = value
         elif key == 'parent':
             parent = value
         else:
-            assert False, f'unkown filed {key}'
-    message = '\n'.join(lines)
-    return commit(tree=tree, parent=parent, message=message)
+            assert False, f'unknown field {key}'
 
+    message = '\n'.join(lines).strip()
+    
+    return Commit(tree=tree, parent=parent, message=message)
 def is_ignored(path):
     return '.ugit' in path.split('/')
