@@ -7,4 +7,8 @@ __pycache__
 
 ugit.egg-info
 .ugit/objects
+.ugit/HEAD
 .ugit
+
+
+lokimane1.txt
