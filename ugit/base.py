@@ -82,7 +82,7 @@ def commit(message):
     commit = f'tree{write_tree()}\n'
     HEAD = data.get_HEAD()
     if HEAD:
-        commit += f'parent{HEAD}\n'
+        commit += f'parent {HEAD}\n'
     commit += '\n'
     commit += f'{message}\n'
     
@@ -95,7 +95,7 @@ def checkout(oid):
     read_tree (commit.tree)
     data.set_HEAD (oid)
 
-Commit = namedtuple ('Commit', ['tree', 'parent', 'message'])
+Commit = namedtuple('Commit', ['tree', 'parent', 'message'])
 
 def get_commit(oid):
     parent = None
@@ -121,5 +121,7 @@ def get_commit(oid):
     message = '\n'.join(lines).strip()
     
     return Commit(tree=tree, parent=parent, message=message)
+
+    
 def is_ignored(path):
     return '.ugit' in path.split('/')

@@ -84,5 +84,6 @@ def log(args):
         oid = commit.parent
 
 
+
 def checkout(args):
     base.checkout(args.oid)
