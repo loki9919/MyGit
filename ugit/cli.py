@@ -55,6 +55,11 @@ def parse_args():
     tag_parser.add_argument('name')
     tag_parser.add_argument('oid', default='@', type=oid, nargs='?')
     
+    branch_parser = commands.add_parser('branch')
+    branch_parser.set_defaults(func=branch)
+    branch_parser.add_argument('name')
+    branch_parser.add_argument('start_point', default='@', type=oid, nargs='?')
+    
     k_parser = commands.add_parser('k')
     k_parser.set_defaults(func=k)
 
@@ -97,6 +102,10 @@ def checkout(args):
 def tag(args):
     oid = args.oid
     base.create_tag(args.name, oid)
+    
+def branch(args):
+    base.create_brach(args.name, args.start_point)
+    print(f'Branch{args.name} created at {args.start_point[:10]}')
     
 def k(args):
     dot = 'digraph commits {\n'
