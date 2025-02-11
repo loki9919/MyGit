@@ -101,7 +101,7 @@ def tag(args):
     base.create_tag(args.name, oid)
     
 def k(args):
-    dot = 'diagraph commits {\n'
+    dot = 'digraph commits {\n'
     
     oids = set()
     for refname, ref in data.iter_refs():
@@ -118,7 +118,12 @@ def k(args):
     dot += '}'
     print(dot)
     
-    with subprocess.Popen (
-            ['dot', '-Tgtk', '/dev/stdin'],
+    # Save the file to the current directory or your chosen location
+    output_path = os.path.join(os.getcwd(), 'tmp/graph.png')
+    
+    # Run the dot command to create the PNG file
+    with subprocess.Popen(
+            ['dot', '-Tpng', '-o', output_path],
             stdin=subprocess.PIPE) as proc:
         proc.communicate(dot.encode())
+        
