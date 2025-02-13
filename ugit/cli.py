@@ -111,10 +111,11 @@ def k(args):
     dot = 'digraph commits {\n'
     
     oids = set()
-    for refname, ref in data.iter_refs():
+    for refname, ref in data.iter_refs(deref=False):
         dot += f'"{refname}" [shape=note]\n'
         dot += f'"{refname}" -> "{ref}"\n'
-        oids.add(ref)
+        if not ref.symbolic:
+            oids.add(ref.value)
         
     for oid in base.iter_commits_and_parents(oids):
         commit = base.get_commit(oid)
@@ -132,4 +133,3 @@ def k(args):
             ['dot', '-Tpng', '-o', output_path],
             stdin=subprocess.PIPE) as proc:
         proc.communicate(dot.encode())
-        
