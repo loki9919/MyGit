@@ -160,6 +160,7 @@ def get_oid(name):
     if len(name) == 40 and is_hex:
         return name
     assert False, f'Unknown name {name}'
+    
 
 def is_ignored(path):
     return '.ugit' in path.split('/')
